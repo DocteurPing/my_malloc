@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC	=	malloc.c
+SRC	=	src/malloc.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -16,7 +16,7 @@ NAME	=	libmy_malloc.so
 all: $(NAME)
 
 $(NAME):	$(OBJ)
-	gcc $(OBJ) $(CFLAGS) -o $(NAME)
+	gcc -shared -o $(NAME) -fpic $(SRC)
 
 clean:
 	rm -rf $(OBJ)
@@ -24,4 +24,5 @@ clean:
 fclean:	clean
 	rm -rf $(NAME)
 
-re:	fclean all
+re:
+	fclean all
