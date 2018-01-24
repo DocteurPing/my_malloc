@@ -8,6 +8,11 @@
 #ifndef MALLOC_H_
 	#define MALLOC_H_
 
+#include <unistd.h>
+#include <stdio.h>
+
+void *base = NULL;
+
 enum e_bool {
 	FALSE,
 	TRUE
@@ -15,7 +20,7 @@ enum e_bool {
 
 typedef struct	s_header_malloc {
 	struct s_header_malloc *next;
-	void *contain;
+	void *current;
 	unsigned int size;
 	enum e_bool is_free;
 } t_header_malloc;
