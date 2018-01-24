@@ -9,7 +9,7 @@ SRC	=	src/malloc.c
 
 OBJ	=	$(SRC:.c=.o)
 
-CFLAGS  =       -W -Wall -Wextra -Werror -Iinclude
+CFLAGS  =       -W -Wall -Wextra -Iinclude -g3
 
 NAME	=	libmy_malloc.so
 

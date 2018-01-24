@@ -18,10 +18,9 @@ void *alloc_end(size_t size)
 	void *ptr_next = sbrk(size);
 	t_header_malloc *header = ptr;
 	
-	(void)ptr_next;
 	header->next = NULL;
 	header->size = size - sizeof(t_header_malloc);
-	header->current = header + sizeof(t_header_malloc);
+	header->current = ptr_next + sizeof(t_header_malloc);
 	header->is_free = FALSE;
 	return (header->current);
 }
@@ -42,7 +41,8 @@ void *malloc(size_t size)
 {
 	void *ptr_return;
 
-	printf("Malloc: starting\n");
+	assert(1 == 3);
+	write(2, "bite\n", 5);
 	if (!base) {
 		base = get_base();
 		ptr_return = alloc_end(size + sizeof(t_header_malloc));
