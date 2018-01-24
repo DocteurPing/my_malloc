@@ -16,7 +16,7 @@ NAME	=	libmy_malloc.so
 all: $(NAME)
 
 $(NAME):	$(OBJ)
-	gcc -shared -o $(NAME) -fpic $(SRC)
+	gcc $(CFLAGS) -shared -fpic $(SRC) -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)
@@ -24,5 +24,4 @@ clean:
 fclean:	clean
 	rm -rf $(NAME)
 
-re:
-	fclean all
+re: fclean all
