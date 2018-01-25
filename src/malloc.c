@@ -5,7 +5,7 @@
 ** malloc.c
 */
 
-#include "../include/malloc.h"
+#include "malloc.h"
 
 void *get_base()
 {
@@ -15,10 +15,10 @@ void *get_base()
 void *alloc_end(size_t size) 
 {
 	void *ptr = sbrk(0);
-	void *ptr_next = sbrk(size);
 	t_header_malloc *header = ptr;
 	
-	write(2, "[TEST]: ALLOC END\n", 18);
+	if (sbrk(size) == ((void *) - 1))
+		return (NULL);
 	header->next = NULL;
 	header->size = size - sizeof(t_header_malloc);
 	header->current = ptr + sizeof(t_header_malloc);
@@ -26,7 +26,7 @@ void *alloc_end(size_t size)
 	return (header->current);
 }
 
-void *find_best_feed(void *base, size_t size)
+void *find_best_feed(size_t size)
 {
 	t_header_malloc *header = base;
 
@@ -43,21 +43,20 @@ void *malloc(size_t size)
 	void *ptr_return;
 
 	if (!base) {
-		write(2, "[TEST]: ENTER BASE\n", 19);
 		base = get_base();
 		ptr_return = alloc_end(size + sizeof(t_header_malloc));
 		return (ptr_return);
 	}
-	write(2, "[TEST]: FIRST FEED\n", 19);
-	return (find_best_feed(base, size + sizeof(t_header_malloc)));
+	return (find_best_feed(size + sizeof(t_header_malloc)));
 }
 
 void free(void *ptr)
 {
 	t_header_malloc *header = base;
 
-	write(2, "[TEST]: FREE\n", 13);
-	while (header->current != ptr)
+	if (ptr == NULL)
+		return ;
+	while (header->current != ptr && header->next != NULL)
 		header = header->next;
 	header->is_free = TRUE;
 }

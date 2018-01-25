@@ -5,17 +5,19 @@
 ## Makefile
 ##
 
-SRC	=	src/malloc.c
+SRC	=	src/malloc.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
-CFLAGS  =       -W -Wall -Wextra -Iinclude -g3
+MODE	=	normal
+
+CFLAGS	=	-W -Wall -Wextra -Iinclude
 
 NAME	=	libmy_malloc.so
 
 all: $(NAME)
 
-$(NAME):	$(OBJ)
+$(NAME):
 	gcc $(CFLAGS) -shared -fpic $(SRC) -o $(NAME)
 
 clean:
