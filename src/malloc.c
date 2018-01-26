@@ -5,9 +5,9 @@
 ** malloc.c
 */
 
-#include "malloc.h"
+#include "../include/malloc.h"
 
-void *get_base()
+void *getbase()
 {
 	return (sbrk(0));
 }
@@ -40,23 +40,61 @@ void *find_best_feed(size_t size)
 
 void *malloc(size_t size)
 {
+	setbuf(stdout, NULL);
+	//printf("malloc: size = %ld\n", size);
 	void *ptr_return;
 
+	size = ALIGN(size);
+	//pthread_mutex_lock(&lock);
 	if (!base) {
-		base = get_base();
-		ptr_return = alloc_end(size + sizeof(t_header_malloc));
+		base = getbase();
+		ptr_return = alloc_end(size);
+		//pthread_mutex_unlock(&lock);
 		return (ptr_return);
 	}
-	return (find_best_feed(size + sizeof(t_header_malloc)));
+	//pthread_mutex_unlock(&lock);
+	ptr_return = find_best_feed(size);
+	//printf("malloc: ptr = %p\n", ptr_return);
+	return (ptr_return);
 }
 
 void free(void *ptr)
 {
+	setbuf(stdout, NULL);
+	//printf("free = %p\n", ptr);
 	t_header_malloc *header = base;
 
 	if (ptr == NULL)
 		return ;
 	while (header->current != ptr && header->next != NULL)
 		header = header->next;
+	if (header->next == NULL)
+		return ;
 	header->is_free = TRUE;
+}
+void *realloc(void *ptr, size_t size)
+{
+	setbuf(stdout, NULL);
+	//printf("malloc: size = %ld\n", size);
+	void *new_ptr = malloc(size);
+
+	if (size == 0) {
+		free(ptr);
+		return (NULL);
+	}
+	if (ptr) {
+		new_ptr = memcpy(new_ptr, ptr, size);
+		free(ptr);
+	}
+	return (new_ptr);
+}
+
+void *calloc(size_t nmeb, size_t size)
+{
+	setbuf(stdout, NULL);
+	//printf("malloc: size = %ld\n", size);
+	void *ptr = malloc(size);
+
+	ptr = memset(ptr, nmeb, size);
+	return (ptr);
 }

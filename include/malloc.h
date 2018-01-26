@@ -11,8 +11,12 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
+#include <pthread.h>
+#define ALIGN(size) (((size + sizeof(struct s_header_malloc)) + (15)) & ~(15))
 
 void *base = NULL;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 enum e_bool {
 	FALSE,
