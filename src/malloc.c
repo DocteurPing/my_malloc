@@ -31,7 +31,7 @@ void *find_best_feed(size_t size)
 	t_header_malloc *header = base;
 
 	while (header->next) {
-		if (header->size >= size && header->is_free)
+		if (header->size > size && header->is_free)
 			return (header->current);
 		header = header->next;
 	}
@@ -44,10 +44,10 @@ void *malloc(size_t size)
 	//printf("malloc: size = %ld\n", size);
 	void *ptr_return;
 
-	size = ALIGN(size);
+	size = ALIGN(size * size);
 	//pthread_mutex_lock(&lock);
 	if (!base) {
-		base = getbase();
+		base = sbrk(0);
 		ptr_return = alloc_end(size);
 		//pthread_mutex_unlock(&lock);
 		return (ptr_return);
