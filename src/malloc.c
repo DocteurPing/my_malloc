@@ -60,10 +60,10 @@ void *my_malloc(size_t size)
 	printf("malloc: size = %ld\n", size);
 	void *ptr_return;
 
-	size = ALIGN(size);
+	size = ALIGN(size * size);
 	//pthread_mutex_lock(&lock);
 	if (!base) {
-		base = getbase();
+		base = sbrk(0);
 		ptr_return = alloc_end(size);
 		//pthread_mutex_unlock(&lock);
 		printf("malloc without base: ptr = %p\n", ptr_return);
