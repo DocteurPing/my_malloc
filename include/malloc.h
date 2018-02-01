@@ -15,8 +15,7 @@
 #include <pthread.h>
 #define ALIGN(size) (((size + sizeof(struct s_header_malloc)) + (15)) & ~(15))
 
-void *base = NULL;
-pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t lock;
 
 enum e_bool {
 	FALSE,
@@ -30,4 +29,10 @@ typedef struct	s_header_malloc {
 	enum e_bool is_free;
 } t_header_malloc;
 
+extern t_header_malloc *base;
+
+void *my_malloc(size_t);
+void my_free(void *);
+void *my_realloc(void *, size_t);
+void *my_calloc(size_t, size_t);
 #endif /* !MALLOC_H_ */
