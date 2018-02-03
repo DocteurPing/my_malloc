@@ -11,7 +11,7 @@ OBJ	=	$(SRC:.c=.o)
 
 MODE	=	normal
 
-CFLAGS	=	-W -Wall -Wextra -Iinclude
+CFLAGS	=	-W -Wall -Wextra -Iinclude -g3
 
 NAME	=	libmy_malloc.so
 

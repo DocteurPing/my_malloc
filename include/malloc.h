@@ -13,6 +13,7 @@
 #include <assert.h>
 #include <string.h>
 #include <pthread.h>
+#include <stdlib.h>
 #define ALIGN(size) (((size + sizeof(struct s_header_malloc)) + (15)) & ~(15))
 
 pthread_mutex_t lock;
@@ -31,8 +32,8 @@ typedef struct	s_header_malloc {
 
 extern t_header_malloc *base;
 
-void *my_malloc(size_t);
-void my_free(void *);
-void *my_realloc(void *, size_t);
-void *my_calloc(size_t, size_t);
+void *malloc(size_t);
+void free(void *);
+void *realloc(void *, size_t);
+void *calloc(size_t, size_t);
 #endif /* !MALLOC_H_ */
