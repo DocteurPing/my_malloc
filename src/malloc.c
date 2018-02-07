@@ -20,9 +20,11 @@ void *alloc_end(size_t size)
 	void *ptr = sbrk(0);
 	t_header_malloc *header = ptr;
 	t_header_malloc *tmp = base;
-	
+
 	setbuf(stdout, NULL);
-	printf("alloc_end\n");
+	printf("break pos : %p\n", getbase());	
+	//printf("alloc_end\n");
+	printf("appel de sbrk avec la taille %ld\n", size);
 	if (sbrk(size) == ((void *) - 1)) {
 		printf("lel sbrk a planté :)\n");
 		exit(0);
@@ -49,12 +51,11 @@ void *find_best_feed(size_t size)
 	while (header->next != NULL) {
 		//printf("searching...\n");
 		if (header->is_free == TRUE && header->size >= size) {
-			printf("find a free block\n");
+			//printf("find a free block\n");
 			header->is_free = FALSE;
 			return (header->current);
 		}
 		header = header->next;
-		//printf("test fbf\n");
 	}
 	printf("No free block available\n");
 	return (alloc_end(size));
@@ -63,18 +64,19 @@ void *find_best_feed(size_t size)
 void *setup_alloc(size_t size)
 {
 	t_header_malloc *header = base;
+	void *p = NULL;
 	
 	setbuf(stdout, NULL);
 	printf("alloc_end\n");
-	if (sbrk(size) == ((void *) - 1)) {
+	if ((p = sbrk(size)) == ((void *) - 1)) {
 		printf("lel sbrk a planté :)\n");
 		exit(0);
 	}
+	printf("nouveau break (size: %ld): %p\n", size, p);
 	header->next = NULL;
 	header->size = size - sizeof(t_header_malloc);
 	header->current = (char *)base + sizeof(t_header_malloc);
 	header->is_free = FALSE;
-	printf("pretest\n");
 	return (header->current);
 }
 
@@ -85,12 +87,15 @@ void *malloc(size_t size)
 	void *ptr_return;
 
 	size = ALIGN(size);
+	if (size == 0)
+		return (NULL);
 	//pthread_mutex_lock(&lock);
 	if (!base) {
+		printf("appel de setupalloc\n");
 		base = sbrk(0);
 		ptr_return = setup_alloc(size);
 		//pthread_mutex_unlock(&lock);
-		printf("malloc without base: ptr = %p\n", ptr_return);
+		//printf("malloc without base: ptr = %p\n", ptr_return);
 		return (ptr_return);
 	}
 	//pthread_mutex_unlock(&lock);
@@ -102,21 +107,22 @@ void *malloc(size_t size)
 void free(void *ptr)
 {
 	setbuf(stdout, NULL);
-	t_header_malloc *header = base;
+	t_header_malloc *header;
+;
 	printf("free: %p\n", ptr);
 	if (ptr == NULL)
 		return ;
- 	while (header->current != ptr && header->next != NULL)
+	header = ptr - sizeof(t_header_malloc);
+ 	/* while (header->next != NULL && header->current != ptr)
 		header = header->next;
 	if (header->next == NULL && header->current != ptr) {
-		if (header->is_free)
-			sbrk(-header->size);
 		printf("free not found\n");
 		return ;
-	}
+	} */
+	
 	header->is_free = TRUE;
-	if (header->next == NULL)
-		sbrk(-header->size);
+	//if (header->next == NULL)
+		//sbrk(-header->size);
 	printf("free = %p\tsize = %d\n", ptr, header->size);
 }
 void *realloc(void *ptr, size_t size)
@@ -124,12 +130,16 @@ void *realloc(void *ptr, size_t size)
 	setbuf(stdout, NULL);
 	printf("realloc: size = %ld\n", size);
 	void *new_ptr = malloc(size);
+	//size_t size_to_copy;
+	//t_header_malloc *header;
 
 	if (size == 0) {
 		free(ptr);
 		return (NULL);
 	}
 	if (ptr) {
+		//header = ptr - sizeof(t_header_malloc);
+		//size_to_copy = header->size;
 		new_ptr = memcpy(new_ptr, ptr, size);
 		free(ptr);
 	}
