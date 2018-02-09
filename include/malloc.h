@@ -14,6 +14,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <string.h>
 #define ALIGN(size) (((size + sizeof(struct s_header_malloc)) + (15)) & ~(15))
 
 pthread_mutex_t lock;

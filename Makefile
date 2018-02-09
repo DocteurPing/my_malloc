@@ -6,6 +6,9 @@
 ##
 
 SRC	=	src/malloc.c	\
+		src/free.c	\
+		src/realloc.c	\
+		src/calloc.c
 
 OBJ	=	$(SRC:.c=.o)
 
