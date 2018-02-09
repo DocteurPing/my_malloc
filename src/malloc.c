@@ -119,8 +119,11 @@ void *realloc(void *ptr, size_t size)
 void *calloc(size_t nmeb, size_t size)
 {
 	setbuf(stdout, NULL);
-	void *ptr = malloc(size);
+	size_t total = nmeb * size;
+	void *ptr = malloc(total);
 
-	ptr = memset(ptr, nmeb, size);
+	if (!total)
+		return (NULL);
+	ptr = memset(ptr, 0, total);
 	return (ptr);
 }
