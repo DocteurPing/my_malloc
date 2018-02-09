@@ -45,10 +45,12 @@ void *find_best_feed(size_t size)
 	while (header->next != NULL) {
 		if (header->is_free == TRUE && header->size >= size) {
 			header->is_free = FALSE;
+			pthread_mutex_unlock(&lock);
 			return (header->current);
 		}
 		header = header->next;
 	}
+	pthread_mutex_unlock(&lock);
 	return (alloc_end(size));
 }
 
@@ -59,12 +61,14 @@ void *setup_alloc(size_t size)
 	
 	setbuf(stdout, NULL);
 	if ((p = sbrk(size)) == ((void *) - 1)) {
+		pthread_mutex_unlock(&lock);
 		exit(0);
 	}
 	header->next = NULL;
 	header->size = size - sizeof(t_header_malloc);
 	header->current = (char *)base + sizeof(t_header_malloc);
 	header->is_free = FALSE;
+	pthread_mutex_unlock(&lock);
 	return (header->current);
 }
 
@@ -76,14 +80,12 @@ void *malloc(size_t size)
 	size = ALIGN(size);
 	if (size == 0)
 		return (NULL);
-	//pthread_mutex_lock(&lock);
+	pthread_mutex_lock(&lock);
 	if (!base) {
 		base = sbrk(0);
 		ptr_return = setup_alloc(size);
-		//pthread_mutex_unlock(&lock);
 		return (ptr_return);
 	}
-	//pthread_mutex_unlock(&lock);
 	ptr_return = find_best_feed(size);
 	return (ptr_return);
 }
