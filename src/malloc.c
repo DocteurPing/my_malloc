@@ -24,6 +24,7 @@ void *alloc_end(size_t size)
 	setbuf(stdout, NULL);
 	if (sbrk(size) == ((void *) - 1)) {
 		exit(0);
+		pthread_mutex_unlock(&lock);
 		return (NULL);
 	}
 	header->next = NULL;
@@ -32,6 +33,7 @@ void *alloc_end(size_t size)
 	header->is_free = FALSE;
 	for (; tmp->next != NULL; tmp = tmp->next);
 	tmp->next = header;
+	pthread_mutex_unlock(&lock);
 	return (header->current);
 }
 
@@ -50,7 +52,6 @@ void *find_best_feed(size_t size)
 		}
 		header = header->next;
 	}
-	pthread_mutex_unlock(&lock);
 	return (alloc_end(size));
 }
 
