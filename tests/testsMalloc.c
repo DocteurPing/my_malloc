@@ -15,10 +15,10 @@ void	firstTests(void)
 	puts("firstTests: testing malloc with tiny size and with very big size");
 }
 
-Test(myMalloc, tinyMalloc, .init = firstTests )
+Test(myMalloc, tinyMalloc, .init = firstTests)
 {
 	char *s;
-
+ 
 	s = malloc(sizeof(char) * 1);
 	cr_assert_neq(s, NULL);
 	free(s);

@@ -5,7 +5,8 @@
 ## makefile
 ##
 
-SRC	=	testsMalloc.c
+SRC	=	testsMalloc.c	\
+		testsRealloc.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -19,7 +20,7 @@ LFLAGS	=	-lcriterion
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc -o $(NAME) $(OBJ) $(LFLAGS)
+	gcc -o $(NAME) $(OBJ) $(CFLAGS) $(LFLAGS)
 
 clean:
 	rm -f $(OBJ)
