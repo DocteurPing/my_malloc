@@ -9,7 +9,6 @@
 
 void *realloc(void *ptr, size_t size)
 {
-	setbuf(stdout, NULL);
 	void *new_ptr = malloc(size);
 
 	if (size == 0) {

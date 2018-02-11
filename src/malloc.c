@@ -21,9 +21,7 @@ void *alloc_end(size_t size)
 	t_header_malloc *header = ptr;
 	t_header_malloc *tmp = base;
 
-	setbuf(stdout, NULL);
 	if (sbrk(size) == ((void *) - 1)) {
-		exit(0);
 		pthread_mutex_unlock(&lock);
 		return (NULL);
 	}
@@ -41,7 +39,6 @@ void *find_best_feed(size_t size)
 {
 	t_header_malloc *header = base;
 
-	setbuf(stdout, NULL);
 	if (header == NULL)
 		return (NULL);
 	while (header->next != NULL) {
@@ -60,7 +57,6 @@ void *setup_alloc(size_t size)
 	t_header_malloc *header = base;
 	void *p = NULL;
 	
-	setbuf(stdout, NULL);
 	if ((p = sbrk(size)) == ((void *) - 1)) {
 		pthread_mutex_unlock(&lock);
 		exit(0);
@@ -75,7 +71,6 @@ void *setup_alloc(size_t size)
 
 void *malloc(size_t size)
 {
-	setbuf(stdout, NULL);
 	void *ptr_return;
 
 	size = ALIGN(size);
