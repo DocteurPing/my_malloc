@@ -33,3 +33,12 @@ Test(myMalloc, bigMalloc)
 	free(s);
 }
 
+Test(myMalloc, checkData)
+{
+	char *s;
+
+	s = malloc(sizeof(char) * 5);
+	s = "test\n";
+	cr_assert_str_eq(s, "test\n");
+}
+
