@@ -12,7 +12,7 @@
 
 void	firstTests(void)
 {
-	puts("firstTests: testing malloc with tiny size and with very big size");
+	puts("testing malloc with tiny size and with very big size");
 }
 
 Test(myMalloc, tinyMalloc, .init = firstTests)

@@ -10,16 +10,16 @@
 #include <signal.h>
 #include "../include/malloc.h"
 
-void	secondTests(void)
+void	thirdTests(void)
 {
-	puts("testing realloc special case");
+	puts("calling calloc()");
 }
 
-Test(myRealloc, firstCase, .init = secondTests)
+Test(myCalloc, callocCall, .init = thirdTests)
 {
 	char *s;
 
-	s = realloc(NULL, sizeof(char) * 20);
+	s = calloc(20, sizeof(char));
 	cr_assert_neq(s, NULL);
 	free(s);
 }

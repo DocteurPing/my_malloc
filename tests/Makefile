@@ -6,7 +6,8 @@
 ##
 
 SRC	=	testsMalloc.c	\
-		testsRealloc.c
+		testsRealloc.c	\
+		testsCalloc.c
 
 OBJ	=	$(SRC:.c=.o)
 
