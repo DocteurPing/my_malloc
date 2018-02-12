@@ -22,7 +22,6 @@ void *alloc_end(size_t size)
 	t_header_malloc *tmp = base;
 
 	if (sbrk(size) == ((void *) - 1)) {
-		exit(0);
 		pthread_mutex_unlock(&lock);
 		return (NULL);
 	}
