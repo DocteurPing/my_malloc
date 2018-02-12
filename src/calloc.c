@@ -9,7 +9,6 @@
 
 void *calloc(size_t nmeb, size_t size)
 {
-	setbuf(stdout, NULL);
 	size_t total = nmeb * size;
 	void *ptr = malloc(total);
 

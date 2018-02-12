@@ -9,7 +9,6 @@
 
 void free(void *ptr)
 {
-	setbuf(stdout, NULL);
 	t_header_malloc *header;
 
 	if (ptr == NULL)
